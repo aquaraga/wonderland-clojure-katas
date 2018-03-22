@@ -23,5 +23,10 @@
   (apply str (map decode-substitute (cycle keyword) message)))
 
 (defn decipher [cipher message]
-  "decypherme")
-
+  (let [rep-keyword (apply str (map decode-substitute message cipher))
+        rep-keyword-len (count rep-keyword)
+       prefixes-array (map #(subs rep-keyword 0 (inc %)) (range rep-keyword-len))
+        padded-prefix-array (map #(vector % (apply str (take rep-keyword-len (cycle %))))
+                                 prefixes-array)
+        matching-tuple (first (filter #(= rep-keyword (second %)) padded-prefix-array))]
+    (first matching-tuple)))
