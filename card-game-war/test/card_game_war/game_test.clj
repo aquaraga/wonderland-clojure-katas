@@ -43,5 +43,50 @@
     )
 
 (deftest test-play-game
-  (testing "the player loses when they run out of cards"))
+  (testing "player2 loses when she run out of cards")
+  (let [player1 [[:heart 8]]
+        player2 []]
+    (is (= :player1 (play-game player1 player2))))
+
+  (testing "player1 loses when she run out of cards")
+  (let [player1 []
+        player2 [[:heart 8]]]
+    (is (= :player2 (play-game player1 player2))))
+
+
+
+  (testing "the player who wins the round will get the other's card")
+   (let [player1 [[:heart 8]]
+   player2 [[:heart 9]]]
+     (is (= :player2 (play-game player1 player2)))
+
+  )
+
+
+
+  (testing "multiple cards for players")
+  (let [player1 [[:heart 8] [:spade :ace] [:heart :queen] [:heart 10]]
+        player2 [[:heart 9] [:spade 3]]]
+    (is (= :player1 (play-game player1 player2)))
+
+    )
+  ; Round1 :
+  ;  Player1 [:spade :ace] [:heart :queen] [:heart 10]
+  ;  Player2 [:spade 3] [:heart 8] [:heart 9]
+  ;
+  ; Round 2 :
+  ;  Player1 [:heart :queen] [:heart 10] [:spade :ace] [:spade 3]
+  ;  Player2 [:heart 8] [:heart 9]
+  ;
+  ; Round 3 :
+  ;  Player1 [:heart 10] [:spade :ace] [:spade 3] [:heart :queen] [:heart 8]
+  ;  Player2 [:heart 9]
+  ;
+  ;
+
+
+
+
+  )
+
 

@@ -23,4 +23,14 @@
           (= rank1-val rank2-val)
             (if (> suit1-val suit2-val) player1-card player2-card))))
 
-(defn play-game [player1-cards player2-cards])
+(defn play-game [player1-cards player2-cards]
+  (cond (empty? player1-cards) :player2
+  (empty? player2-cards) :player1
+  :else (let [player1-card (first player1-cards)
+              player2-card (first player2-cards)
+              win-card (play-round player1-card player2-card)
+              player1-wins-round (= win-card player1-card)]
+          (if player1-wins-round
+            (play-game (conj (rest player1-cards) player1-card player2-card) (rest player2-cards))
+            (play-game (rest player1-cards) (conj (rest player2-cards) player1-card player2-card)))
+          )))
