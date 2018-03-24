@@ -10,6 +10,10 @@
     (is (= #{:you} (what-to-take-while-going #{:you}))))
   (testing "leave behind something that doesn't eat the other thing"
     (is (= #{:goose :you} (what-to-take-while-going #{:goose :corn :fox :you}))))
+  (testing "leave behind goose if only fox and goose is on left bank"
+    (is (= #{:fox :you} (what-to-take-while-going #{:goose :fox :you}))))
+  (testing "leave behind goose if only corn and goose is on left bank"
+    (is (= #{:corn :you} (what-to-take-while-going #{:goose :corn :you}))))
   (testing "take any one if neither eats the other"
     (is (or (= #{:fox :you} (what-to-take-while-going #{:corn :fox :you}))
             (= #{:corn :you} (what-to-take-while-going #{:corn :fox :you})))))
@@ -33,9 +37,9 @@
 
 (deftest test-all-on-right
   (testing "you end with the fox, goose and corn on right side of the river"
-    (is (all-on-right? (conj start-pos [[] [:boat] [:you :fox :goose :corn]]))))
+    (is (all-on-right? [#{} #{:boat} #{:you :fox :goose :corn}])))
   (testing "you don't end up with any less than 4 items (including you) on the right side"
-    (is (not (all-on-right? (conj start-pos [[] [:boat :you] [:fox :goose :corn]])))))
+    (is (not (all-on-right? [#{} #{:boat :you} #{:fox :goose :corn}]))))
   )
 
 (deftest test-next-move

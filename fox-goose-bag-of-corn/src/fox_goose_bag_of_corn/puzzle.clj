@@ -4,15 +4,15 @@
 (def start-pos [[[:fox :goose :corn :you] [:boat] []]])
 
 
-(defn all-on-right? [plan]
-  (let [last-move (map set (last plan))]
-    (= last-move [#{} #{:boat} #{:fox :goose :corn :you}])))
+(defn all-on-right? [last-move]
+  (= last-move [#{} #{:boat} #{:fox :goose :corn :you}]))
 
 
 (defn what-to-take-while-going [left-bank-state]
   (cond
     (<= (count (clojure.set/difference left-bank-state #{:you})) 1) left-bank-state
-    (contains? left-bank-state :goose) #{:goose :you}
+    (clojure.set/subset? #{:goose :fox :corn} left-bank-state) #{:goose :you}
+    (contains? left-bank-state :goose) (clojure.set/difference left-bank-state #{:goose})
     :otherwise #{:you (first (clojure.set/difference left-bank-state #{:you}))}
     )
   )
@@ -45,16 +45,18 @@
     )
   ) )
 
-;
-;
+
 
 
 
 (defn river-crossing-plan []
-  ; (loop [out start-pos]
-  ;  (if (all-on-right? out)
-  ;  out
-  ;  (recur (conj out (find-next-move out)))))
-
-  start-pos)
+  (let [last-move #(map set (last %))]
+    (loop [out [(last-move start-pos)] forward? true]
+     (if (all-on-right? (last-move out))
+       (map vec out)
+       (let [{forward :forward move :move} (find-next-move (last-move out) forward? )]
+         (recur (conj out move) forward)
+         )
+       )))
+)
 
