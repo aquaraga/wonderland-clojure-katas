@@ -3,6 +3,14 @@
             [fox-goose-bag-of-corn.puzzle :refer :all]
             [clojure.set]))
 
+(deftest test-all-on-right
+  (testing "you end with the fox, goose and corn on right side of the river"
+    (is (all-on-right? (conj start-pos [[] [:boat] [:you :fox :goose :corn]]))))
+  (testing "you don't end up with any less than 4 items (including you) on the right side"
+    (is (not (all-on-right? (conj start-pos [[] [:boat :you] [:fox :goose :corn]])))))
+  )
+
+
 (defn validate-move [step1 step2]
   (testing "only you and another thing can move"
     (let [diff1 (clojure.set/difference step1 step2)
