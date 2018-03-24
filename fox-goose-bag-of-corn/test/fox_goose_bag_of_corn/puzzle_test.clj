@@ -10,6 +10,14 @@
     (is (not (all-on-right? (conj start-pos [[] [:boat :you] [:fox :goose :corn]])))))
   )
 
+(deftest test-next-move
+  (testing "when you are moving forward in the boat, you get down on the right side"
+    (is (= {:forward false :move [#{} #{:boat}  #{:fox :corn :you :goose}]}
+             (find-next-move [#{} #{:boat :goose :you}  #{:fox :corn}] true))))
+  (testing "when you are moving backward in the boat, you get down on the left side"
+    (is (= {:forward true :move [#{:corn :you :goose} #{:boat}  #{:fox}]}
+           (find-next-move [#{:corn} #{:boat :goose :you}  #{:fox}] false)))))
+
 
 (defn validate-move [step1 step2]
   (testing "only you and another thing can move"
